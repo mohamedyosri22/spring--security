@@ -7,8 +7,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/subs")
 public class SubsController {
-    @GetMapping("/")
+    @GetMapping("/start")
     public String start(){
+        return "this is subscribers controller";
+    }
+
+    @GetMapping("/end")
+    public String end(){
         return "this is subscribers controller";
     }
 }
