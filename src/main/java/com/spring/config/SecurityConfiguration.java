@@ -30,10 +30,10 @@ public class SecurityConfiguration {
         return http.build();
     }
 
-    @Bean
+    /*@Bean
     public UserDetailsService userDetailsService(DataSource dataSource) throws Exception{
         return new JdbcUserDetailsManager(dataSource);
-    }
+    }*/
 
     /*@Bean
     public UserDetailsService userDetailsService() throws Exception{
