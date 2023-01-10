@@ -40,13 +40,14 @@ public class SecurityConfiguration {
                     }
                 }).and()
                 //.csrf().disable();
-                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+                .csrf().ignoringRequestMatchers("/basketball/*")
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 
         return http.build();
     }
 
     /*@Bean
-    public UserDetailsService userDetailsService(DataSource dataSource) throws Exception{
+    public UserDetailsService userDetailsService(Da0taSource dataSource) throws Exception{
         return new JdbcUserDetailsManager(dataSource);
     }*/
 
