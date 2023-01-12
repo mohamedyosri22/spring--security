@@ -1,5 +1,6 @@
 package com.spring.dao;
 
+import com.spring.model.Authority;
 import com.spring.model.Subscriber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -40,14 +41,22 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         }
         else{
             if(passwordEncoder.matches(password,subscribers.get(0).getPassword())){
-                List<GrantedAuthority> authorities = new ArrayList<>();
-                authorities.add(new SimpleGrantedAuthority(subscribers.get(0).getRole()));
-                return new UsernamePasswordAuthenticationToken(userName,password,authorities);
+                //List<GrantedAuthority> authorities = new ArrayList<>();
+                //authorities.add(new SimpleGrantedAuthority(subscribers.get(0).getRole()));
+                return new UsernamePasswordAuthenticationToken(userName,password,getAuthority(subscribers.get(0).getAuthorities()));
             }
             else{
                 throw new BadCredentialsException("Wrong password");
             }
         }
+    }
+
+    private List<SimpleGrantedAuthority> getAuthority(List<Authority> authorityList){
+        List<SimpleGrantedAuthority> simpleGrantedAuthorities = new ArrayList<>();
+        for(Authority auth : authorityList){
+            simpleGrantedAuthorities.add(new SimpleGrantedAuthority(auth.getName()));
+        }
+        return simpleGrantedAuthorities;
     }
 
     @Override

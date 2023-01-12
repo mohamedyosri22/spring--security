@@ -1,6 +1,9 @@
 package com.spring.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class Subscriber {
@@ -13,7 +16,10 @@ public class Subscriber {
 
     private String password;
 
-    private String role;
+    @JsonIgnore
+    @OneToMany(mappedBy = "subscriber",fetch = FetchType.EAGER)
+    private List<Authority> authorities;
+
 
     public Long getId() {
         return id;
@@ -39,11 +45,11 @@ public class Subscriber {
         this.password = password;
     }
 
-    public String getRole() {
-        return role;
+    public List<Authority> getAuthorities() {
+        return authorities;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setAuthorities(List<Authority> authorities) {
+        this.authorities = authorities;
     }
 }

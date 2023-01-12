@@ -21,8 +21,10 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception{
         http.authorizeHttpRequests((auth)->
-                auth.requestMatchers("/football/*","/basketball/*",
-                        "/swimming/*","/subs/*").authenticated()
+                auth.requestMatchers("/football/*"
+                                ,"/subs/*").hasAuthority("WRITE")
+                        .requestMatchers("/swimming/*").hasAuthority("READ")
+                        .requestMatchers("/basketball/*").hasAuthority("LESTEN")
                         .requestMatchers("/about/","/connect/").permitAll()
                 )
                 .httpBasic(Customizer.withDefaults())

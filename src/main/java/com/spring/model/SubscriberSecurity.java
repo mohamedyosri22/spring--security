@@ -19,7 +19,7 @@ public class SubscriberSecurity implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorityList = new ArrayList<>();
-        authorityList.add(new SimpleGrantedAuthority(subscriber.getRole()));
+        //authorityList.add(new SimpleGrantedAuthority(subscriber.getRole()));
         return authorityList;
     }
 
