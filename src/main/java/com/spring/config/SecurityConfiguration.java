@@ -1,5 +1,6 @@
 package com.spring.config;
 
+import com.spring.filters.FilterBefore;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -22,7 +24,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception{
         http.authorizeHttpRequests((auth)->
                 auth.requestMatchers("/football/*"
-                                ,"/subs/*").hasAuthority("WRITE")
+                                ,"/subs/*").hasAuthority("WRITE")//.hasRole("ADMIN")
                         .requestMatchers("/swimming/*").hasAuthority("READ")
                         .requestMatchers("/basketball/*").hasAuthority("LESTEN")
                         .requestMatchers("/about/","/connect/").permitAll()
@@ -41,6 +43,7 @@ public class SecurityConfiguration {
                         return config;
                     }
                 }).and()
+                .addFilterAt(new FilterBefore(), BasicAuthenticationFilter.class)
                 //.csrf().disable();
                 .csrf().ignoringRequestMatchers("/basketball/*")
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
