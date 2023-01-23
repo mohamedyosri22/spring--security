@@ -1,6 +1,8 @@
 package com.spring.config;
 
+import com.spring.constants.SecurityConstant;
 import com.spring.filters.FilterBefore;
+import com.spring.filters.JWTTokenFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +17,7 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -28,6 +31,7 @@ public class SecurityConfiguration {
                                 ,"/subs/*").hasRole("ADMIN")
                         .requestMatchers("/swimming/*").hasAnyRole("MANGER","ADMIN")
                         .requestMatchers("/basketball/*").hasRole("USER")
+                        .requestMatchers("/login").authenticated()
                         .requestMatchers("/about/","/connect/").permitAll()
                 )
                 .httpBasic(Customizer.withDefaults())
@@ -41,9 +45,11 @@ public class SecurityConfiguration {
                         config.setAllowCredentials(true);
                         config.setAllowedHeaders(Collections.singletonList("*"));
                         config.setMaxAge(2500L);
+                        config.setExposedHeaders(Arrays.asList(SecurityConstant.HEADER));
                         return config;
                     }
                 }).and()
+                .addFilterAfter(new JWTTokenFilter(),BasicAuthenticationFilter.class)
                 .addFilterBefore(new FilterBefore(), BasicAuthenticationFilter.class)
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
