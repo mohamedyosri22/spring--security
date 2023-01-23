@@ -3,6 +3,7 @@ package com.spring.config;
 import com.spring.constants.SecurityConstant;
 import com.spring.filters.FilterBefore;
 import com.spring.filters.JWTTokenFilter;
+import com.spring.filters.JwtVaidation;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -50,7 +51,7 @@ public class SecurityConfiguration {
                     }
                 }).and()
                 .addFilterAfter(new JWTTokenFilter(),BasicAuthenticationFilter.class)
-                .addFilterBefore(new FilterBefore(), BasicAuthenticationFilter.class)
+                .addFilterBefore(new JwtVaidation(), BasicAuthenticationFilter.class)
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
